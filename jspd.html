@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>门窗价格 · 高密度截图版</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg: #0f172a;
+            --card: #020617;
+            --accent: #22c55e;
+            --accent-soft: rgba(34, 197, 94, 0.12);
+            --accent-text: #bbf7d0;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --border-subtle: rgba(148, 163, 184, 0.4);
+            --danger: #f97373;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui;
+            background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #000 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 640px;
+            padding: 16px 16px 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .title-section {
+            flex: 1;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: .02em;
+        }
+
+        .subtitle {
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .toggle-panel-btn {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 30px;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent-text);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            white-space: nowrap;
+            margin-left: 10px;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .toggle-panel-btn:active {
+            background: rgba(34, 197, 94, 0.3);
+        }
+
+        .card {
+            background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            box-shadow: 0 22px 45px rgba(15, 23, 42, 0.9), 0 0 0 1px rgba(15, 23, 42, 0.9);
+            padding: 12px 12px 14px;
+            margin-bottom: 12px;
+            transition: opacity 0.2s;
+        }
+
+        .card.hidden {
+            display: none;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .pill {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.32);
+            color: #a5f3fc;
+            border: 1px solid rgba(45, 212, 191, 0.4);
+        }
+
+        label {
+            font-size: 11px;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            align-items: flex-end;
+        }
+
+        .field {
+            flex: 1;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 7px 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(15, 23, 42, 0.85);
+            color: var(--text-main);
+            font-size: 12px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #6b7280;
+        }
+
+        input:focus {
+            border-color: rgba(34, 197, 94, 0.9);
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+            background: rgba(15, 23, 42, 1);
+        }
+
+        .tips {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 6px;
+        }
+
+        .switch {
+            position: relative;
+            width: 42px;
+            height: 22px;
+            border-radius: 999px;
+            background: rgba(31, 41, 55, 1);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            display: inline-flex;
+            align-items: center;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        .switch-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            box-shadow: 0 4px 8px rgba(15, 23, 42, 0.9);
+            transform: translateX(0);
+            transition: transform .18s ease;
+        }
+
+        .switch.on {
+            background: rgba(22, 163, 74, 0.32);
+            border-color: rgba(34, 197, 94, 0.9);
+        }
+
+        .switch.on .switch-thumb {
+            background: #bbf7d0;
+            transform: translateX(18px);
+        }
+
+        .switch-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-left: 6px;
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 8px;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #22c55e, #4ade80);
+            color: #022c22;
+            box-shadow: 0 14px 30px rgba(34, 197, 94, 0.4), 0 0 0 1px rgba(22, 101, 52, 0.7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn:active {
+            transform: translateY(1px) scale(.98);
+            filter: brightness(.98);
+        }
+
+        .status {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            min-height: 14px;
+        }
+
+        .results-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            padding: 10px;
+            max-height: calc(100vh - 220px);
+            /* 默认值，面板显示时 */
+            overflow-y: auto;
+            transition: max-height 0.2s;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .results-title {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .results-meta {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* 产品卡片高密度样式 */
+        .product {
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: radial-gradient(circle at top, #020617 0, #020617 50%, #020617 100%);
+            padding: 8px;
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(34, 197, 94, 0.12), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.08), transparent 55%);
+            opacity: .75;
+            pointer-events: none;
+        }
+
+        .product-main {
+            position: relative;
+            display: flex;
+            gap: 6px;
+        }
+
+        .product-img {
+            width: 58px;
+            height: 70px;
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: #020617;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: var(--text-muted);
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .price-tag {
+            background: var(--accent-soft);
+            padding: 2px 6px;
+            border-radius: 14px;
+            color: var(--accent-text);
+            font-weight: 600;
+            font-size: 11px;
+            white-space: nowrap;
+            margin-left: 4px;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            font-size: 8px;
+            color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.9);
+            line-height: 1.3;
+        }
+
+        .total-row {
+            margin: 5px 0 3px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .total-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: #facc15;
+        }
+
+        .desc-text {
+            font-size: 8px;
+            color: var(--text-muted);
+            line-height: 1.3;
+            word-break: break-word;
+            margin-bottom: 3px;
+        }
+
+        .footer-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .badge {
+            font-size: 7px;
+            padding: 1px 5px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent-text);
+            border: 1px solid rgba(34, 197, 94, 0.7);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 380px) {
+            .title {
+                font-size: 16px;
+            }
+
+            .product-img {
+                width: 55px;
+                height: 65px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="title-section">
+                <div class="title">PD门 / 移门计算器</div>
+                <div class="subtitle">输入尺寸，一键生成多款门型报价</div>
+            </div>
+            <div id="togglePanelBtn" class="toggle-panel-btn">
+                <span>👁️</span><span>隐藏面板</span>
+            </div>
+        </div>
+
+        <div id="inputCard" class="card">
+            <div class="card-header">
+                <div class="card-title">基础参数</div>
+                <div class="pill">宽 × 高 × 门套单价</div>
+            </div>
+
+            <div class="field">
+                <label for="textA">尺寸输入（支持 x / - / + / * 分隔）</label>
+                <input id="textA" type="text" placeholder="例如：800-2000 或 800x2000x80" autocomplete="off" />
+                <div class="tips">
+                    - 整数按毫米转米，小数点直接视为米。<br>
+                    - 第三个数字为门套单价(元/米)。
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="field">
+                    <label for="extraPerSquare">平方加价（元/㎡）</label>
+                    <input id="extraPerSquare" type="number" inputmode="decimal" placeholder="默认 0" />
+                </div>
+                <div class="field">
+                    <label for="extraFee">额外加价（元）</label>
+                    <input id="extraFee" type="number" inputmode="decimal" placeholder="默认 0" />
+                </div>
+            </div>
+
+            <div class="switch-row">
+                <div style="display:flex;align-items:center;">
+                    <div id="doubleDoorSwitch" class="switch" role="switch" aria-checked="false" tabindex="0">
+                        <div class="switch-thumb"></div>
+                    </div>
+                    <div class="switch-label">双开门（两扇联动）</div>
+                </div>
+                <div class="tips small">系数2</div>
+            </div>
+
+            <button id="calcBtn" class="btn">
+                <span class="icon">⚡</span>
+                <span>开始计算</span>
+            </button>
+
+            <div id="status" class="status"></div>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <div class="results-header">
+                <div class="results-title">计算结果</div>
+                <div class="results-meta" id="summaryMeta">等待输入尺寸…</div>
+            </div>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script src="pd.js"></script>
+    <script>
+        (function () {
+            const SMALL_WIDTH_LIMIT = 1.05;
+
+            const $ = (id) => document.getElementById(id);
+            const textAEl = $("textA");
+            const extraPerSquareEl = $("extraPerSquare");
+            const extraFeeEl = $("extraFee");
+            const doubleDoorSwitchEl = $("doubleDoorSwitch");
+            const calcBtnEl = $("calcBtn");
+            const statusEl = $("status");
+            const resultsEl = $("results");
+            const summaryMetaEl = $("summaryMeta");
+            const togglePanelBtn = $("togglePanelBtn");
+            const inputCard = $("inputCard");
+            const resultsCard = $("resultsCard");
+
+            // 面板切换 + 动态调整结果卡片高度
+            let panelHidden = false;
+            togglePanelBtn.addEventListener("click", () => {
+                panelHidden = !panelHidden;
+                inputCard.classList.toggle("hidden", panelHidden);
+                togglePanelBtn.innerHTML = panelHidden ? '<span>👁️</span><span>显示面板</span>' : '<span>👁️</span><span>隐藏面板</span>';
+
+                // 动态改变结果卡片的最大高度，让出更多空间
+                if (panelHidden) {
+                    // 面板隐藏：卡片高度 ≈ 视口高度 - 头部区域(约100px) - 上下留白
+                    resultsCard.style.maxHeight = "calc(100vh - 120px)";
+                } else {
+                    // 面板显示：恢复原值
+                    resultsCard.style.maxHeight = "calc(100vh - 220px)";
+                }
+            });
+
+            doubleDoorSwitchEl.addEventListener("click", () => {
+                doubleDoorSwitchEl.classList.toggle("on");
+                doubleDoorSwitchEl.setAttribute("aria-checked", doubleDoorSwitchEl.classList.contains("on"));
+            });
+            doubleDoorSwitchEl.addEventListener("keydown", (e) => {
+                if (e.key === " " || e.key === "Enter") {
+                    e.preventDefault();
+                    doubleDoorSwitchEl.click();
+                }
+            });
+
+            function parseNumbersFromInput(text) {
+                if (!text) return [];
+                const pattern = /[0-9]+(?:\.[0-9]+)?/g;
+                const matches = text.match(pattern) || [];
+                const dims = [];
+                matches.forEach((m, idx) => {
+                    if (m.includes(".")) {
+                        const v = parseFloat(m);
+                        if (!isNaN(v)) dims.push(v);
+                    } else {
+                        const v = parseInt(m, 10);
+                        if (isNaN(v)) return;
+                        if (idx <= 1) dims.push(v / 1000);
+                        else dims.push(v);
+                    }
+                });
+                return dims;
+            }
+
+            function getSeparatorCount(text) {
+                if (!text) return 0;
+                const symbols = ["x", "X", "*", "-", "+"];
+                return [...text].filter(ch => symbols.includes(ch)).length;
+            }
+
+            function setStatus(msg, isError = false) {
+                statusEl.textContent = msg || "";
+                statusEl.classList.toggle("error", !!isError);
+            }
+
+            function renderResults(context, items) {
+                const { width, height, doorFactor } = context;
+                summaryMetaEl.textContent = `宽 ${width.toFixed(3)}m × 高 ${height.toFixed(3)}m，${doorFactor === 2 ? '双开门' : '单扇门'}`;
+
+                if (!items.length) {
+                    resultsEl.innerHTML = '<div class="product-line">暂无匹配产品</div>';
+                    return;
+                }
+
+                const html = items.map((it, idx) => {
+                    const hasImg = !!it.图片链接;
+                    const colorList = (it.可选颜色 || "").split('｜').filter(c => c.trim() !== '');
+                    const widthLimit = /宽度不能超过[0-9.]+m/.exec(it.说明 || "")?.[0] || '';
+
+                    return `
+                        <div class="product">
+                            <div class="product-main">
+                                <div class="product-img">
+                                    ${hasImg ? `<img src="${it.图片链接}" alt="${it.品名}" />` : '<span>无图</span>'}
+                                </div>
+                                <div class="product-body">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+                                        <span class="product-name">${idx + 1}. ${it.品名}</span>
+                                        <span class="price-tag">${it.价格}元/㎡</span>
+                                    </div>
+                                    <div style="display:flex; flex-wrap:wrap; gap:3px; margin-bottom:4px;">
+                                        <span class="chip">最低 ${it.最低面积}㎡</span>
+                                        <span class="chip">${it.门套 || '门套'}</span>
+                                        ${colorList.map(c => `<span class="chip">${c.trim()}</span>`).join('')}
+                                    </div>
+                                    <div class="total-row">
+                                        <span class="total-price">${Math.round(it.合计费用)}元</span>
+                                    </div>
+                                    <div class="desc-text">${it.说明 || ''}</div>
+                                    <div class="footer-tags">
+                                        ${widthLimit ? `<span class="badge">${widthLimit}</span>` : '<span class="badge">参考说明</span>'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                resultsEl.innerHTML = html;
+            }
+
+            function calculate() {
+                const raw = (textAEl.value || "").trim();
+                const extraPerSquare = parseFloat(extraPerSquareEl.value.replace(",", ".")) || 0;
+                const extraFee = parseFloat(extraFeeEl.value.replace(",", ".")) || 0;
+                const doorFactor = doubleDoorSwitchEl.classList.contains("on") ? 2 : 1;
+
+                if (!raw) {
+                    setStatus("请输入尺寸，例如 800-2000", true);
+                    resultsEl.innerHTML = "";
+                    summaryMetaEl.textContent = "等待输入尺寸…";
+                    return;
+                }
+
+                const dims = parseNumbersFromInput(raw);
+                const sepCount = getSeparatorCount(raw);
+                if (dims.length < 2) {
+                    setStatus("至少需要宽和高", true);
+                    return;
+                }
+
+                const width = dims[0];
+                const height = dims[1];
+                const area = +(width * height).toFixed(5);
+                const perimeter = +(width + height * 2).toFixed(5);
+
+                let framePricePerMeter = 0;
+                if (dims.length >= 3 && sepCount >= 2) {
+                    framePricePerMeter = dims[2];
+                }
+
+                const smallWidth = width < SMALL_WIDTH_LIMIT;
+                const groupA = PRODUCTS.slice(0, 8);
+                const groupB = PRODUCTS.slice(7);
+                const productGroup = doorFactor === 2 ? PRODUCTS : (smallWidth ? groupA : groupB);
+
+                const items = productGroup.map(p => {
+                    const minArea = Number(p.最低面积) || 0;
+                    const chargeArea = Math.max(area, minArea * doorFactor);
+                    const doorPrice = (p.价格 + extraPerSquare) * chargeArea;
+                    const framePrice = framePricePerMeter > 0 ? Math.round(perimeter * framePricePerMeter) : 0;
+                    const total = doorPrice + framePrice + extraFee;
+                    return {
+                        ...p,
+                        合计费用: total,
+                    };
+                });
+
+                setStatus(`匹配 ${items.length} 款产品`);
+                renderResults({ width, height, area, doorFactor }, items);
+            }
+
+            calcBtnEl.addEventListener("click", calculate);
+            textAEl.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    calculate();
+                }
+            });
+
+            setStatus("输入尺寸后开始计算");
+        })();
+    </script>
+</body>
+
+</html>
